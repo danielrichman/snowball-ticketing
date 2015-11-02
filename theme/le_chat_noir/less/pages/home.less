@@ -1,0 +1,168 @@
+.home-carousel {
+    .item {
+        height: 500px;
+    }
+
+    .carousel-indicators {
+        width: 100%;
+        text-align: center;
+        position: static;
+
+        li {
+            display: inline-block;
+            margin: 0 2.5px;
+            float: none;
+            cursor: pointer;
+        }
+    }
+
+    .invisible-carousel-control {
+        position: absolute;
+        display: block;
+        width: 300px;
+        height: 100%;
+        top: 0;
+
+        a {
+            display: block;
+            height: 100%;
+        }
+
+        &:before {
+            content: " ";
+            display: block;
+
+            position: absolute;
+            top: 200px;
+
+            width: 27px;
+            height: 54px;
+            background-image: url("@{theme_static}carousel_arrows.png");
+            background-repeat: no-repeat;
+        }
+
+        &.left {
+            left: -160px;
+
+            &:before {
+                background-position: -27px 0;
+                right: 200px;
+            }
+            &:hover:before {
+                background-position: 0 0;
+            }
+        }
+
+        &.right {
+            right: -160px;
+            &:before {
+                background-position: -54px 0;
+                left: 200px;
+            }
+            &:hover:before {
+                background-position: -81px 0;
+            }
+        }
+    }
+
+    section {
+        margin-bottom: 0;
+    }
+
+    h3 {
+        margin-top: 0;
+    }
+
+    .theme-blurb {
+        text-align: center;
+
+        h3 {
+            color: transparent !important;
+            font-size: 0px;
+            display: block;
+            height: 35px;
+            background-image: url('theme/come_and_pad.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        img {
+            margin: 20px auto;
+        }
+
+        .date {
+            font-family: "Noir et Blanc";
+            font-size: 45px;
+            line-height: 65px;
+            font-weight: bold;
+        }
+    }
+
+    .hudson-taylor p {
+        line-height: 210px;
+        font-size: 150px;
+        font-family: "Noir et Blanc";
+
+        width: 400px;
+        text-align: center;
+
+        margin: 0 auto;
+        padding-top: 10px;
+    }
+
+    .ticket-release {
+        text-align: center;
+
+        .release {
+            font-family: "Noir et Blanc";
+            font-size: 75px;
+            line-height: 120px;
+
+            padding-top: 120px;
+        }
+        .when {
+            .text-info;
+            text-transform: uppercase;
+            font-size: 24px;
+
+            sup {
+                text-transform: none;
+            }
+        }
+
+        .buy-manage {
+            font-family: "Noir et Blanc";
+            font-size: 60px;
+            line-height: 95px;
+
+            padding: 145px 0 20px;
+        }
+        .login {
+            font-family: "Noir et Blanc";
+            font-size: 30px;
+            line-height: 50px;
+
+            a:hover, a:focus {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .jive-aces {
+        text-align: center;
+        padding-top: 20px;
+        height: 480px;
+
+        h3 {
+            font-family: "Noir et Blanc", sans-serif;
+            letter-spacing: 0.1em;
+
+            font-size: 49px;
+            line-height: 72px;
+            font-weight: normal;
+        }
+        img {
+            margin: 0 auto;
+        }
+    }
+}

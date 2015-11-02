@@ -1,0 +1,12 @@
+{% extends "theme/base.html" %}
+
+{% block header %}
+    {{ super() }}
+
+    {% if session.ok %}
+        <form action="{{ url_for('login.logout') }}" method="POST" class='logout-form'>
+            <input type="hidden" name="csrf_secret" value="{{ session.csrf_secret }}">  
+            <button type="submit">Log out</button>
+        </form>
+    {% endif %}
+{% endblock header %}

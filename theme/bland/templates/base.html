@@ -1,0 +1,25 @@
+{% extends "document.html" %}
+
+{% set site_title = "Selwyn Snowball" %}
+{% set theme_scripts = ["coffee/theme/common.js"] %}
+
+{% block extra_header %}
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='theme/apple-touch-icon-144-precomposed.png') }}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ url_for('static', filename='theme/apple-touch-icon-114-precomposed.png') }}">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url_for('static', filename='theme/apple-touch-icon-72-precomposed.png') }}">
+                    <link rel="apple-touch-icon-precomposed" href="{{ url_for('static', filename='theme/apple-touch-icon-57-precomposed.png') }}">
+                                   <link rel="shortcut icon" href="{{ url_for('static', filename='theme/favicon.ico') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="content">
+        {% block header %}
+            <header>
+                <h1 id="site-title">{{ site_title }}</h1>
+                <h2 id="page-title">{{ page_title|d("&nbsp;"|safe) }}</h2>
+            </header>
+        {% endblock %}
+
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

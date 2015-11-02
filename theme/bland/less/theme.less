@@ -1,0 +1,51 @@
+@import "misc.less";
+@import "login.less";
+@import "tickets.less";
+
+.content {
+    .container;
+}
+
+header {
+    h1 {
+        text-align: center;
+        font-size: 80px;
+        line-height: 100px;
+        margin-bottom: (-@baseLineHeight + 2px);
+
+        &:after {
+            display: block;
+            content: "";
+            position: relative;
+            top: (-10px + @baseLineHeight + 3px);
+            border-bottom: 1px solid #eee;
+            z-index: -1;
+        }
+    }
+
+    text-align: center;
+
+    h2 {
+        background-color: white;
+        padding: 0 10px;
+        display: inline-block;
+        white-space: nowrap;
+    }
+}
+
+form.logout-form {
+    margin: 0;
+    button {
+        .btn;
+
+        float: right;
+        margin-top: -44px;
+    }
+}
+
+form.login-form button,
+form.user-details-form button,
+.error-page ul.error-actions li a,
+.tickets-details-continue {
+    .btn-primary;
+}

@@ -1,0 +1,29 @@
+{%- macro user_details_inline(user) -%}
+    {%- set pt = user.person_type -%}
+    {#- technically doesn't always show all non-none values, but should cover all plausible cases -#}
+
+    <span class="user-details-inline">
+        <span class="name">
+            <span class="othernames">{{ user.othernames }}</span>
+            <span class="surname">{{ user.surname }}</span> {#- remove space -#}
+        </span>
+        {%- if user.crsid is not none %}
+            (<span class="crsid">{{ user.crsid }}</span>)
+        {%- endif -%}
+
+        {%- if user.college_id is not none -%}
+            ,
+            {% if pt in ("undergraduate", "postgraduate", "alumnus") -%}
+                {{ 'a' if pt == 'postgraduate' else 'an' }} <span class='person-type'>{{ pt }}</span>
+            {% else %}
+                a member
+            {% endif %}
+
+            of <span class='college-name'>{{ user.college_id|college_name }}</span>
+
+            {%- if pt == "alumnus" and user.matriculation_year is not none %}
+                (<span class='matriculation-year'>{{ user.matriculation_year }}</span>)
+            {%- endif -%}
+        {%- endif -%}
+    </span>
+{%- endmacro -%}

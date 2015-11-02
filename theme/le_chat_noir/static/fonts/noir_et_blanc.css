@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Noir et Blanc';
+    src: url('noir_et_blanc.eot');
+    src: url('noir_et_blanc.eot?#iefix') format('embedded-opentype'),
+         url('noir_et_blanc.woff') format('woff'),
+         url('noir_et_blanc.ttf') format('truetype'),
+         url('noir_et_blanc.svg#noir-et-blancnormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

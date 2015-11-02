@@ -1,0 +1,20 @@
+  - name: President
+    email: president
+    people:
+      - Mr President
+
+  - name: Vice-President
+    email: vice-president
+    people:
+      - Mr Vice President
+
+  - name: Security
+    email: security
+    people:
+      - Mrs Security
+
+  - name: Website & Ticketing
+    email: webmaster
+    people:
+      - Unlucky person 1
+      - Unlucky person 2

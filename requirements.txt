@@ -1,0 +1,13 @@
+Flask
+PyYAML
+psycopg2
+py-bcrypt
+python-raven
+pytz
+
+reportlab
+
+sphinx
+
+gevent
+gunicorn

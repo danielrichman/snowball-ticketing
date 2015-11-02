@@ -1,0 +1,18 @@
+{%- set subject = "Snowball Email Confirmation" -%}
+
+Hello,
+
+You're receiving this email since someone (hopefully you!) has just created a
+user on the Snowball Ticketing system.
+
+{% rewrap %}
+If this was indeed you, please confirm ownership of "{{ recipient.email }}" by
+clicking the following link:
+{% endrewrap %}
+
+    {{ url_for('login.email_confirm', user_id=user_id, secret=secret,
+                                      _external=True) }}
+
+If this wasn't you, please let us know by replying to this email.
+
+{% include "emails/footer.txt" %}

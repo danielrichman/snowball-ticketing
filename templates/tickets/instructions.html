@@ -1,0 +1,72 @@
+{% set instructions_page_script = "coffee/tickets_instructions.js" %}
+
+{% macro instructions(qpp_sentence, prices, mode_sentence) %}
+    <section class="tickets-instructions {{ session.user.hide_instructions|sif('collapsed') }}">
+        <div class="tickets-instructions-hide">
+            <button>Hide</button>
+            {% if not session.user.hide_instructions %}
+                <label><input type="checkbox" name="hide_instructions" value="yes" checked> don't show this again</label>
+            {% endif %}
+        </div>
+
+        <div class="tickets-instructions-show">
+            <button>Show ticketing overview</button>
+        </div>
+
+        <ul>
+            {% if mode_sentence %}
+                <li class="mode_sentence">{{ mode_sentence }}.</li>
+            {% endif %}
+            <li>Provided there are tickets available, you may buy them immediately.</li>
+            <li>
+                By continuing and reserving tickets, you agree to all the
+                <a href="{{ url_for('.terms') }}" target="_blank">terms and conditions</a>.
+            </li>
+            <li>
+                All current University members and Selwyn College Alumni may buy tickets for both themselves
+                and others, including of course tickets for those not at the university. <br>
+                If you buy tickets for other people, you will be designated as the &ldquo;Team Leader&rdquo;
+                for this transaction and you thereby assume full responsibility for all of those tickets,
+                including payment.
+            </li>
+            <li>All guests must be at least 18 years old on the date of the ball.</li>
+            <li>Tickets are sold first come first served.</li>
+            <li class="qpp_sentence">{{ qpp_sentence }}.</li>
+            <li class="prices">
+                Standard tickets cost <span class="standard">{{ prices.standard|pounds_pence }}</span>, but for
+                <span class="vip">{{ prices.vip|pounds_pence }}</span> VIP ticket holders will enjoy queue jump
+                and a VIP drinks reception.
+            </li>
+            <li>
+                After you buy a ticket, you have <b>10 minutes</b> to &ldquo;finalise&rdquo; it by filling out the name
+                (and a couple of other details) of the person that the ticket is for. If you fail to do this,
+                it will be automatically cancelled and released for someone else to buy.
+                Places on the waiting list must be similarly finalised.
+            </li>
+            <li>
+                All payments should ideally be by bank transfer; please get in touch if this is an issue.
+                We ask that you complete payment within <b>7 days</b>.
+            </li>
+            <li>
+                When the tickets are sold out, you may instead place yourself on a waiting list (though you will
+                be warned first). It is very possible that you will still be able to buy tickets, so don't despair. <br>
+                We will email you if tickets become available to check that you still want them. <br>
+                If you both buy a standard ticket and join the VIP waiting list with the same name,
+                and a VIP space then becomes available, we will contact you to offer the option to upgrade.
+                In the meantime, please just pay for your standard ticket.
+            </li>
+            <li>
+                Do not hesitate to get in touch with us at
+                <a href="mailto:ticketing@selwynsnowball.co.uk">ticketing@selwynsnowball.co.uk</a>
+                if you have any problems.
+            </li>
+        </ul>
+    </section>
+{% endmacro %}
+
+{% macro instructions_extra_javascript() %}
+    var tickets_hide_instructions = {
+        "url": {{ url_for(".hide_instructions")|tojson }},
+        "value": {{ session.user.hide_instructions|tojson }}
+    };
+{% endmacro %}

@@ -1,0 +1,205 @@
+html, body {
+    min-height: 100%;
+}
+
+body {
+    /* design width is 1558px, but minimal requiered for all important bits
+     * to be visible is 1320px */
+    min-width: 1320px;
+
+    background-color: black;
+
+    /* provide this first. If no gradient is supported, it should just
+     * fail to parse and fall back to this line */
+    background-image: url('@{theme_static}chapel_sketch_white.png');
+
+    @lcn-gradient: to top, #002, #001 30%, black 50%, black;
+    background-image: url('@{theme_static}chapel_sketch_white.png'),
+                      -webkit-linear-gradient(@lcn-gradient);
+    background-image: url('@{theme_static}chapel_sketch_white.png'),
+                      linear-gradient(@lcn-gradient);
+    /* <=ie9 filter in ie9.css */
+
+    background-repeat: no-repeat, repeat-x;
+    background-position: center bottom;
+
+    /* scaling size background */
+    background-size: 100%;
+    /* chapel sketch is 29.25% high as wide; add a little gap */
+    padding-bottom: 30%;
+
+    /* Since .container:before is quite wide, scrollbars will appear even on
+     * wide screens. We don't want to start scrolling until we hit the
+     * minimum width. */
+    overflow-x: hidden;
+}
+
+.wide-background() {
+    display: block;
+    content: "";
+
+    z-index: -1;
+    position: relative;
+    width: 1558px;
+    left: -309px;
+
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+header {
+    .container;
+
+    &:before {
+        .wide-background();
+
+        background-image: url('@{theme_static}eyes.png');
+        height: 95px;
+        margin-bottom: -95px;
+        top: 30px;
+    }
+
+    /* some pages will have <h1>Le Chat Noir</h1> and others
+     * <h1><a>Le Chat Noir</a></h1> */
+    h1.site-title {
+        &, a {
+            /* title.png width 962px (i.e., +22) height 63px */
+            display: block;
+            width: 962px;
+            height: 63px;
+
+            color: transparent !important;
+            font-size: 0px;
+        }
+
+        margin: 37px 0 26px -11px;
+        background-image: url('@{theme_static}title.png');
+        background-position: center center;
+        background-repeat: no-repeat;
+
+        a:hover, a:focus {
+            background-image: url('@{theme_static}title_hover.png');
+            .transition(all .2s ease-in-out);
+        }
+    }
+
+    ul {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 50px;
+
+        li {
+            display: table-cell;
+            padding: 2px 10px 0;
+
+            border: 2px solid white;
+            border-style: none solid;
+
+            &, a, button {
+                font-size: 20px;
+                line-height: 32px;
+
+                font-family: "Noir et Blanc";
+                font-weight: bold;
+
+                color: white;
+
+                white-space: nowrap;
+                text-align: center;
+            }
+
+            a, button {
+                &:hover, &:focus {
+                    color: #eee;
+                    text-shadow:  4px  4px 10px rgba(255, 255, 255, 0.5),
+                                 -4px  4px 10px rgba(255, 255, 255, 0.5),
+                                 -4px -4px 10px rgba(255, 255, 255, 0.5),
+                                  4px -4px 10px rgba(255, 255, 255, 0.5);
+                    .transition(all .2s ease-in-out);
+                }
+            }
+
+            a {
+                display: block;
+                text-decoration: none !important;
+            }
+
+            form {
+                margin: 0;
+            }
+
+            button {
+                display: inline-block;
+                margin-top: -4px; /* !?!? */
+                width: 100%;
+                background-color: transparent;
+                cursor: pointer;
+                border: 0;
+                padding: 0;
+            }
+        }
+
+        &.navigation li {
+            /* all equal sized */
+            width: 1%;
+        }
+
+        &.title-bar li {
+            /* left and right items 1/5th width; middle takes the rest. */
+            width: 20%;
+
+            &#page-title {
+                width: auto;
+            }
+        }
+    }
+}
+
+.content {
+    .container;
+
+    /* 332px (whiskers-top) + 290px (whiskers height) */
+    min-height: 622px;
+
+
+    &:before {
+        .wide-background();
+
+        background-image: url('@{theme_static}whiskers_masked.png');
+        height: 289px;
+        margin-bottom: -289px;
+
+        /* 332px down design;
+         * subtract 39 59 28 (h1)
+         * subtract 40 50 (ul.navigation) */
+        top: 116px;
+    }
+
+    &.full-whiskers:before {
+        background-image: url('@{theme_static}whiskers.png');
+    }
+}
+
+@media (max-width: 1320px) {
+    body {
+        /* static size background
+         * see also ie8.css - forces this on due to ie8's lack of
+         * background-size: 100% support
+         * 386px + 20px gap */
+        padding-bottom: 406px;
+        background-size: auto;
+        /* have to position it on the left; "center" seems to be centre of the
+         * screen, which on a thin screen, is wrong. */
+        background-position: left bottom;
+        overflow-x: visible;
+    }
+
+    header:before, .content:before {
+        width: 1320px;
+        left: -190px;
+    }
+}

@@ -1,0 +1,8 @@
+Python: see reqirements.txt
+Probably want libyaml-dev for PyYAML accel
+
+external binaries:
+    node
+        coffeescript
+        less
+    html5-tidy

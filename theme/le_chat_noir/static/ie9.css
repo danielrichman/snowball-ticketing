@@ -1,0 +1,5 @@
+/* I suspect the gradient is causing IE9 to dislike the background-image */
+body {
+    background-image: url('chapel_sketch_white.png');
+    background-repeat: no-repeat;
+}

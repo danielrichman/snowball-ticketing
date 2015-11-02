@@ -1,0 +1,40 @@
+{% extends "theme/info_base.html" %}
+
+{% set page_title = "Workers" %}
+
+{% block content %}
+    <section class='info workers'>
+        <h2>Working at the Snowball</h2>
+        <p>
+            Thank you for your interest in working at Selwyn Snowball 2013! This is the only winter ball in Cambridge this year
+            and we're really excited about working with you to make it amazing. Absolutely no experience is required, we will
+            give you all the training necessary.
+        </p>
+        <p>
+            Please submit the online application form no later than <b>4th November</b> and we will get back to you as soon as
+            possible. If you have any further questions or trouble filling out the form, please feel free to email
+            Peggy and Fiona at <a href='mailto:personnel@selwynsnowball.co.uk'>personnel@selwynsnowball.co.uk</a>.
+        </p>
+        <p>
+            Roles Required:
+        </p>
+        <ul>
+            <li>Food &amp; Drink</li>
+            <li>General</li>
+            <li>Security</li>
+        </ul>
+        <p>
+            Shifts Available:
+        </p>
+        <ul>
+            <li>1<sup>st</sup> shift: work 8pm - 12am in return for free entry to the 2<sup>nd</sup> half of the ball</li>
+            <li>2<sup>nd</sup> shift: work 12am - 4am, paid</li>
+        </ul>
+        {% if false %}
+            <p class='apply'><a href="https://docs.google.com/forms/d/1xG3ZHOd-0Hwxma5yK1COsYTFjaJuMrSxr-UnDtUvnHc/viewform">Apply to work at the Snowball</a></p>
+        {% else %}
+            <p class='apply-closed'>Applications for workers have now closed; thank you to those who have applied.</p>
+        {% endif %}
+        <p class="home"><a href="{{ url_for('info.index') }}">Home</a></p>
+    </section>
+{% endblock %}

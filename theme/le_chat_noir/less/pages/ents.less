@@ -1,0 +1,23 @@
+section.ents {
+    .music {
+        min-height: 200px;
+        padding-right: 310px;
+        background-image: url('@{theme_static}ht_paris.jpg');
+        background-repeat: no-repeat;
+        background-position: bottom right;
+    }
+
+    .food, .drink {
+        width: 460px;
+        .box-sizing(border-box);
+    }
+    .food {
+        float: left;
+        padding-right: 10px;
+    }
+    .drink {
+        float: right;
+        padding-left: 10px;
+    }
+    .food-drink { .clearfix; }
+}

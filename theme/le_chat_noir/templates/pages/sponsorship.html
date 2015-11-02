@@ -1,0 +1,47 @@
+{% extends "theme/info_base.html" %}
+
+{% set page_title = "Sponsorship" %}
+
+{% block content %}
+    <section class='info sponsorship'>
+        <div class="sponsors">
+            <h2>The Selwyn Snowball is proudly sponsored by:</h2>
+            <a href="http://www.crccasia.com/" rel="nofollow" target="_blank"> {#- else browsers put spaces in -#}
+                <img src="{{ url_for('static', filename='theme/sponsors/crcc_asia.png') }}" alt="CRCC ASIA"> {#- -#}
+            </a>
+            <a href="http://www.ninetyninecatering.com" rel="nofollow" target="_blank"> {#- -#}
+                <img src="{{ url_for('static', filename='theme/sponsors/ninetynine.png') }}" alt="Ninety Nine Catering Limited"> {#- -#}
+            </a>
+            <a href="http://www.riverbarsteakhouse.com/" rel="nofollow" target="_blank"> {#- -#}
+                <img src="{{ url_for('static', filename='theme/sponsors/river_bar.png') }}" alt="River Bar"> {#- -#}
+            </a>
+        </div>
+
+        <div class="sponsor-us">
+            <h2>Sponsor the Selwyn Snowball!</h2>
+            <p>
+                This year's Snowball is set to take place on Friday 6<sup>th</sup> December and promises to be
+                the biggest and best Snowball to date.
+            </p>
+            <p>
+                Sponsoring the Selwyn Snowball offers a wealth of opportunities to raise the profile of your company. As a 
+                winter ball, and therefore not in competition with the later summer balls, our publicity dominates Cambridge 
+                and tickets are highly sought after. With just under 1000 guests, who are largely students of Cambridge 
+                University, sponsoring Selwyn Snowball gives your company unrivaled access to this unique demographic.
+                You will have focused advertising towards 20,000 students at the University of Cambridge, who are among the 
+                most talented and promising students in the country. The event offers a fantastic opportunity for your company 
+                to enhance its profile and to an excess of Cambridge career-orientated students and guests who will be attending 
+                the ball.
+            </p>
+            <p>
+                Our sponsorship options include displaying your logo on our website, including your logo in the ball programme,
+                and complimentary VIP tickets.
+            </p>
+            <p>
+                Please do not hesitate to contact
+                <a href="mailto:sponsorship@selwynsnowball.co.uk">Abigail (sponsorship@selwynsnowball.co.uk)</a> for further details.
+            </p>
+            <p class="home"><a href="{{ url_for('info.index') }}">Home</a></p>
+        </div>
+    </section>
+{% endblock %}

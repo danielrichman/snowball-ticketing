@@ -1,0 +1,2 @@
+UPDATE tickets SET finalised=NULL, expires=utcnow(), expires_reason='admin-intervention' WHERE ticket_id=M AND user_id=N
+UPDATE users SET last_receipt=NULL WHERE user_id=N

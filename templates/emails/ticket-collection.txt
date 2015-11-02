@@ -1,0 +1,44 @@
+{%- set subject = "Snowball Tickets Collection" -%}
+
+Dear {{ recipient.name }},
+
+Thank you for paying for your Snowball ticket. We hope you are looking
+forward to the ball as much as we are.
+
+{% rewrap %}
+We are planning to distribute physical tickets to the ball this week.
+{%- if alumnus %}
+We will also provide a desk on the night of the ball for alumni to
+collect their tickets.
+{%- endif -%}
+{% endrewrap %}
+
+The details of the collection times are as follows:
+
+Monday 2nd, 18:15 - 20:00; Tower Room, Selwyn College
+Tuesday 3rd, 18:15 - 20:00; Tower Room, Selwyn College
+Wednesday 4th, 13:00 - 15:00; Small Examination Hall Foyer, New Museums Site
+(near the CUSU offices)
+
+In order to collect the tickets, we will require photo ID
+(University cards are acceptable)
+
+
+These are the tickets you will be able to collect:
+{% for ticket in paid_tickets -%}
+    {#- #}    {{ "VIP" if ticket.vip else 'Standard' }}: {{ ticket.othernames }} {{ ticket.surname }}
+{% endfor %}
+
+If there are any problems with these names please let us know as soon as
+possible, otherwise you may incur an administrative charge for name changing.
+On the night, we will operate on the policy that if the name on the ticket
+does not match the name on your ID, you will denied entry.
+
+PLEASE NOTE:
+We can only distribute orders of 2 or more tickets to the primary ticket
+holder (i.e., the person who signs onto the ticketing website).
+If you forsee there being a problem with this, please contact
+ticketing@selwynsnowball.co.uk.
+
+Snowball 2013 Ticketing
+ticketing@selwynsnowball.co.uk

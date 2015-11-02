@@ -1,0 +1,215 @@
+{% extends "theme/ticketing_base.html" %}
+
+{% from "tickets/tickets_table.html" import tickets_table %}
+
+{% set page_title = "Ticket Details" %}
+{% set page_scripts = ["coffee/tickets_details.js", "coffee/deadline.js"] %}
+
+{% block content %}
+    {% if submitted_expired %}
+        <div class='submitted-expired'>
+            <h4>Could not save changes to an expired ticket.</h4>
+            Ticket details must be completed within 10 minutes of reserving tickets. In between loading the previous page and submitting the form,
+            one or more of your reservations &ldquo;expired&rdquo;.
+            The tickets listed below represent the current state of your tickets at the time of loading this page.
+        </div>
+    {% endif %}
+    {% if submitted_finalised %}
+        <div class='submitted-finalised'>
+            <h4>Could not save changes to a finalised ticket.</h4>
+            You attempted to change the details on a ticket, presumably either by having this website open in another tab or
+            pressing the refresh or back buttons.
+            The tickets listed below represent the current state of your tickets at the time of loading this page.
+            If you need to change something, or have a problem, please
+            <a href='ticketing@selwynsnowball.co.uk'>email us</a>.
+        </div>
+    {% endif %}
+
+    {% if finalised_tickets|length %}
+        <p class='counts-sentence'>
+            Your {{ finalised_tickets|length }} &ldquo;finalised&rdquo;
+            {% if finalised_tickets|length == 1 %}
+                ticket is
+            {% else %}
+                tickets are
+            {% endif %}
+            listed below
+            {%- if unfinalised_tickets|length -%}
+                , followed by a form to complete the details on the remaining
+                {{ unfinalised_tickets|length }} reserved {{ 'ticket'|plural(unfinalised_tickets|length) -}}
+            {%- endif -%}
+            .
+        </p>
+    {% elif unfinalised_tickets|length %}
+        <p class='counts-sentence'>
+            You have {{ unfinalised_tickets|length }} reserved {{ 'ticket'|plural(unfinalised_tickets|length) }}.
+            To complete the process, please provide details (name and so forth) for the tickets below.
+        </p>
+    {% else %}
+        <p class='counts-sentence'>
+            You do not currently have any tickets or spaces on the waiting list.
+            Please note that tickets will &ldquo;expire&rdquo; if you do not complete the details (name, etc.) on them sufficiently quickly.
+        </p>
+    {% endif %}
+
+    {% if deadline is not none %}
+        <p class='text-warning'>
+            You need to complete the details on your tickets, or they will automatically expire. <br>
+            <span class="deadline"></span>
+        </p>
+    {% endif %}
+
+    {% if finalised_tickets|length %}
+        {{ tickets_table(finalised_tickets, title="Finalised Tickets") }}
+    {% endif %}
+
+    {% if unfinalised_tickets|length %}
+        <form action="{{ url_for('.details') }}" method="POST" class="tickets-details">
+            <input type="hidden" name="csrf_secret" value="{{ session.csrf_secret }}">
+
+            {% for ticket in unfinalised_tickets %}
+                <input type="hidden" id="{{ ticket.ticket_id }}_form_person_type" name="{{ ticket.ticket_id }}_form_person_type" value="{{ ticket.person_type.value or '' }}">
+                <fieldset id="ticket_{{ ticket.ticket_id }}" class="ticket person-type-{{ ticket.person_type.value or "none" }}">
+                    <legend>
+                        {% if ticket.waiting_list %}
+                            Waiting List Place ({{ 'VIP' if ticket.vip else 'Standard' }})
+                        {% else %}
+                            {{ 'VIP' if ticket.vip else 'Standard' }} Ticket
+                        {% endif %}
+                    </legend>
+
+                    <div class='control-group person-type {{ ticket.person_type.error|sif('error') }}'>
+                        <label class='control-label' for="{{ ticket.ticket_id }}_person_type">This ticket is for</label>
+                        <div class='controls'>
+                            <select name="{{ ticket.ticket_id }}_person_type" id="{{ ticket.ticket_id }}_person_type">
+                                {% macro optval(what) -%}
+                                value={{ what }} {{ (ticket.person_type.value == what)|sif('selected') }}
+                                {%- endmacro %}
+                                <option {{ (ticket.person_type.value is none)|sif('selected') }}></option>
+                                <option {{ optval('me') }}>me</option>
+                                <optgroup label='a current member of Cambridge University'>
+                                    <option {{ optval('undergraduate') }}>Undergraduate</option>
+                                    <option {{ optval('postgraduate') }}>Postgraduate</option>
+                                    <option {{ optval('staff') }}>Staff</option>
+                                    <option {{ optval('cam-other') }}>other</option>
+                                </optgroup>
+                                <option {{ optval('alumnus') }}>a Cambridge alumnus</option>
+                                <option {{ optval('non-cam') }}>other</option>
+                            </select>
+                            {% if ticket.person_type.empty %}
+                                <span class='help-inline'>Please select one option</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class='control-group surname {{ ticket.surname.error|sif('error') }}'>
+                        <label class='control-label' for="{{ ticket.ticket_id }}_surname">Surname</label>
+                        <div class='controls'>
+                            <input type="text" id="{{ ticket.ticket_id }}_surname" name="{{ ticket.ticket_id }}_surname" value="{{ ticket.surname.value }}">
+                            {% if ticket.surname.empty %}
+                                <span class='help-inline'>Please provide this ticket holder's surname</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class='control-group othernames {{ ticket.othernames.error|sif('error') }}'>
+                        <label class='control-label' for="{{ ticket.ticket_id }}_othernames">Other names</label>
+                        <div class='controls'>
+                            <input type="text" id="{{ ticket.ticket_id }}_othernames" name="{{ ticket.ticket_id }}_othernames" value="{{ ticket.othernames.value }}">
+                            {% if ticket.othernames.empty %}
+                                <span class='help-inline'>Please provide this ticket holder's first name</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class='control-group name-preview hide'>
+                        <div class='controls'>
+                            <p class='text-info'>The name on this ticket will appear as &ldquo;<span class="name-preview-value"></span>&rdquo;.</p>
+                        </div>
+                    </div>
+
+                    <div class='control-group college {{ ticket.college_id.error|sif('error') }}'>
+                        <label class='control-label' for="{{ ticket.ticket_id }}_college_id">College</label>
+                        <div class='controls'>
+                            <select name="{{ ticket.ticket_id }}_college_id" id="{{ ticket.ticket_id }}_college_id">
+                                <option value="" {{ "selected" if ticket.college_id.value is none else "" }}></option>
+                                {% for id, name in all_colleges()|dictsort(false, 'value') %}
+                                    <option value="{{ id }}" {{ "selected" if ticket.college_id.value == id else "" }}>{{ name }}</option>
+                                {% endfor %}
+                            </select>
+
+                            {% if ticket.college_id.empty %}
+                                <span class='help-inline'>Please select a college</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class='control-group matriculation-year {{ ticket.matriculation_year.error|sif('error') }}'>
+                        <label class='control-label' for="{{ ticket.ticket_id }}_matriculation_year">Matriculation Year</label>
+                        <div class='controls'>
+                            <input type="text" id="{{ ticket.ticket_id }}_matriculation_year" name="{{ ticket.ticket_id }}_matriculation_year" value="{{ ticket.matriculation_year.value }}">
+                            {% if ticket.matriculation_year.empty %}
+                                <span class='help-inline'>Please provide this ticket holder's matriculation year</span>
+                            {% elif ticket.matriculation_year.future %}
+                                <span class='help-inline'>Matriculation year is in the future</span>
+                            {% elif ticket.matriculation_year.invalid %}
+                                <span class='help-inline'>Invalid matriculation year</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </fieldset>
+            {% endfor %}
+
+            <div class='submit'>
+                <p>
+                    Please check the details above carefully before proceeding.
+                    If you have any problems, please email
+                    <a href='ticketing@selwynsnowball.co.uk'>ticketing@selwynsnowball.co.uk</a>
+                </p>
+                <p>
+                    By clicking continue,
+                </p>
+                <ul>
+                    {% if payment_notice %}
+                        <li>
+                            I agree to pay Selwyn Snowball for the tickets I am about to reserve within 7 days.
+                            (You will receive payment instructions on the next page
+                            {%- if payment_notice == "mixed" -%}
+                                ; you need only pay for tickets, not waiting list places
+                            {%- endif -%}
+                            .)
+                        </li>
+                    {% endif %}
+                    <li>I confirm that all guests listed above will be at least 18 years old on the date of the ball.</li>
+                    <li>
+                        I confirm that I agree to all of the
+                        <a href="{{ url_for('.terms') }}" target="_blank">terms and conditions</a>.
+                    </li>
+                </ul>
+
+                <button type="submit">Continue</button>
+            </div>
+        </form>
+    {% else %}
+        <p>
+            If you have any problems, please email
+            <a href='ticketing@selwynsnowball.co.uk'>ticketing@selwynsnowball.co.uk</a>
+        </p>
+
+        <p><a class='tickets-details-continue' href='{{ url_for('.home') }}'>Ticketing home</a></p>
+    {% endif %}
+{% endblock %}
+
+{% block extra_javascript %}
+    {{ super() }}
+    var unfinalised_ticket_ids = {{ unfinalised_ticket_ids|tojson }};
+    {% if deadline is not none %}
+        var deadline_settings = {
+            "elem": ".deadline",
+            "time": {{ deadline|tojson }},
+            "url": {{ url_for('time')|tojson }}
+        };
+    {% else %}
+        var deadline_settings = null;
+    {% endif %}
+{% endblock %}

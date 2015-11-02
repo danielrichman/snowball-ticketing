@@ -1,0 +1,41 @@
+/* set a default... */
+.btn {
+    .btn-inverse;
+}
+
+/* and beat bootstrap into submission */
+input, select, textarea {
+    /* Note this also overrides .error input color;
+     * while not originally intentional, it looks better anyway like that 
+     * with grey/black backgrounds */
+    color: @grayLighter !important;
+}
+
+.alert {
+    text-shadow: 0 1px 0 rgba(0,0,0,.5);
+}
+
+legend {
+    color: @grayLighter;
+}
+
+/* bootstrap uses @warningText as the colour in alert (and @infoText etc...),
+ * i.e., the colours used in text-alert and text-error, etc...
+ * With a black background, this looks bad. So the colours in variables.less
+ * are designed for the text usage; the backgrounds for the alerts, and the
+ * text colours for the alerts are here. */
+.alert {
+    color: #fcf8e3
+}
+
+.alert-info {
+    color: #d8f0f0;
+}
+
+.alert-success {
+    color: #dff0d8;
+}
+
+.alert-error {
+    color: #ffdede;
+}

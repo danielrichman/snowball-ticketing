@@ -1,0 +1,27 @@
+Dear {{ recipient.name }},
+
+{% rewrap %}
+We hope you are looking forward to the ball tomorrow. Here are some things which you may not already know but are of importance:
+
+ - You will require an in-date driving license, passport, or card bearing a the PASS hologram. There is no way around this. We have hired professional bouncers who will not let you through the door if you cannot prove you are 18 or over.
+
+ - The name on your ID must match the name in our database. Unless you have spoken to us already, this is the name on your ticket (small differences, (e.g., Charlotte/Charlie) are fine, provided it is obviously you).
+
+ - Doors open at 20:00 (8:00pm) for VIP ticket holders and 20:30 (8:30pm) for standard ticket holders. Please note however, that queues will most likely start to form before these times. The details of which type of ticket you have can be found under your name on the sticker on the back.
+
+ - Doors shut at 22:30 (10:30pm) and the ball ends at 03:00 (3:00am). There will be no re-admittance to the ball if you leave at any point.
+
+ - The VIP queue will be in the college car park, running from the Porters' Lodge towards the library and the standard queue will be along Grange Road on the pavement, running from the Porters' Lodge again towards Robinson College.
+
+ - The dress code is Black Tie.
+{% endrewrap %}
+
+Please contact ticketing@selwynsnowball.co.uk if you have any queries.
+
+Also, for those of you in search of name changes, the deadline will be
+18:00 (6:00pm) this evening (05 Dec 2013).
+
+Looking forward to seeing you all tomorrow.
+
+Thanks,
+Snowball Ticketing

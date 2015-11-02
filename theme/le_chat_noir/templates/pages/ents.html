@@ -1,0 +1,45 @@
+{% extends "theme/info_base.html" %}
+
+{% set page_title = "Ents" %}
+
+{% block content %}
+    <section class='info ents'>
+        <div class='music'>
+            <h3>Entertainments</h3>
+            <p>
+                This year the Snowball, which in the past has played host to bands including
+                Mumford and Sons and The Who, presents acts including the Irish folk-pop duo
+                <a href="http://www.hudsontaylormusic.com/">Hudson Taylor</a> and the UK's 
+                no. one jive and swing band, <a href="http://www.jiveaces.com/">The Jive Aces</a>.
+            </p>
+            <p>
+                It will also feature performances from up-and-coming pop quintet 
+                <a href="http://thelineofbestfit.com/new-music/undiscovered/amber-128474">Amber Run</a>,
+                who have just been signed to Sony, and the CU show choir.
+            </p>
+            <p><a href="https://www.facebook.com/events/582500148482928/">Interested in auditioning to play at the Snowball?</a></p>
+        </div>
+        <div class="food-drink">
+            <div class="food">
+                <h3>Food</h3>
+                <p>
+                    'Le Chat Noir' offers a feast for all the senses, and taste is not forgotten!
+                    From exotic specialities to satisfying comfort food, we have a delicacy to suit
+                    every palate. Perhaps we can even tempt you to indulge in some surprising dishes
+                    you might not be expecting...
+                </p>
+            </div>
+            <div class="drink">
+                <h3>Drink</h3>
+                <p>
+                    From hot drinks in the queue to beer that is being specially brewed for the
+                    Snowball, this year's drinks will be exceptional!
+                    Enjoy delicious themed cocktails or chill out with a steaming cup of liqueur
+                    coffee in the French Caf&eacute;.
+                    After all, we do occasionally need to take a little break...
+                </p>
+            </div>
+        </div>
+        <p class="home"><a href="{{ url_for('info.index') }}">Home</a></p>
+    </section>
+{% endblock %}

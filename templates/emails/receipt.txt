@@ -1,0 +1,110 @@
+{%- if harass -%}
+{%- set subject = "Snowball Tickets Payments - Possible Action Needed" -%}
+{%- elif waiting_release -%}
+{%- set subject = "Snowball Waiting List" -%}
+{%- else -%}
+{%- set subject = "Snowball Tickets Receipt" -%}
+{%- endif -%}
+
+
+{#- The blank lines are very fiddly below.
+    Basically there's a gap before the paid tickets, and then each optional
+    section is responsible for adding a blank line after itself.
+    In most cases this is the blank line between "endfor %} and {% endif" -#}
+{#- We can't use url_for, since it works out external urls using the request
+    environment. -#}
+
+
+
+{%- if recipient.name is not none -%}
+Dear {{ recipient.name }},
+
+{% endif -%}
+
+
+{%- if harass -%}
+{%- rewrap -%}
+Our records show that you have not yet paid for some or all of your tickets.
+If we do not receive this payment before 
+{{ payment_deadline|format_datetime("date nice") }}
+your tickets (or VIP upgrades, where appropriate) will be freed and given to
+people currently on the waiting list.
+
+Details of the amount owed and how to pay are outlined towards the end of
+this email. Please be aware that it may take a few days for our system to
+process your payment - when the payment is processed successfully, you will
+receive a confirmation email. If you feel there is a problem or foresee a
+problem arising, please do not hesitate to contact
+ticketing@selwynsnowball.co.uk.
+{%- endrewrap %}
+
+{% endif -%}
+
+
+{%- if waiting_release -%}
+{%- rewrap -%}
+We are pleased to say that some tickets have been made available for our
+ball this year, and as you have expressed interest by joining our waiting
+list we are offering you the opportunity to buy them.
+
+Assuming you still want this ticket, please pay within
+{{ ask_pay_within }} {{ "day"|plural("ask_pay_within") }} (see below),
+otherwise we will release it to others on the list.
+
+If you know that you no longer require a ticket for the Snowball, please let
+us know as soon as possible so that we can pass it on to someone else.
+{%- endrewrap %}
+
+{% endif -%}
+
+
+Thank you for purchasing tickets to the Selwyn Snowball 2015. The summary below
+describes the current state of your tickets for the Selwyn Snowball.
+
+You can of course see the same information on the Snowball website:
+https://www.selwynsnowball.co.uk/
+
+
+{% if paid_tickets -%}
+These tickets have been paid for:
+{% for ticket in paid_tickets -%}
+    {#- #}    {{ "VIP" if ticket.vip else 'Standard' }}: {{ ticket.othernames }} {{ ticket.surname }}
+{% endfor %}
+{% endif -%}
+
+{%- if unpaid_tickets -%}
+You have reserved these tickets:
+{% for ticket in unpaid_tickets -%}
+    {#- #}    {{ "VIP" if ticket.vip else 'Standard' }}: {{ ticket.othernames }} {{ ticket.surname }}
+{% endfor %}
+{% endif -%}
+
+{% if waiting_list_places -%}
+You have {{ waiting_list_places }} {{ "place"|plural(waiting_list_places) }} on the waiting list.
+
+{% endif -%}
+
+
+{%- if outstanding_balance -%}
+{% rewrap %}
+Please make a payment of {{ outstanding_balance|pounds_pence(true) }},
+reference {{ payment_reference }}.
+{% endrewrap %}
+
+All payments should be made by bank transfer to the Selwyn Snowball account:
+    Sort code:          redacted
+    Account number:     redacted
+
+It is very important that you include the above reference with your payment.
+{%- if not harass %}
+{% rewrap -%}
+We ask that you complete payment within
+{{ ask_pay_within }} {{ "day"|plural(ask_pay_within) }}.
+{%- endrewrap -%}
+{%- endif %}
+
+{% endif -%}
+
+
+{#- add one more blank line before the footer to make two #}
+{% include "emails/footer.txt" %}

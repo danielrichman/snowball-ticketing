@@ -1,0 +1,21 @@
+{% extends "theme/ticketing_base.html" %}
+
+{% block content %}
+    <div class='error-page'>
+        {% if message is defined %}
+            <h4 class='text-error'>{{ message }}</h4>
+        {% endif %}
+
+        {% block actions %}
+            <ul class='error-actions'>
+                {% if action is defined %}
+                    <li><a href='{{ action.url }}'>{{ action.text }}</a></li>
+                {% endif %}
+                {% if session.ok %}
+                    <li><a href='{{ url_for("tickets.home") }}'>Tickets</a></li>
+                {% endif %}
+                <li><a href='{{ url_for("info.index") }}'>Home</a></li>
+            </ul>
+        {% endblock %}
+    </div>
+{% endblock %}

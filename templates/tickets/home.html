@@ -1,0 +1,91 @@
+{% extends "theme/ticketing_base.html" %}
+
+{% from "user-details-inline.html" import user_details_inline %}
+{% from "tickets/instructions.html" import instructions, instructions_page_script, instructions_extra_javascript %}
+{% from "tickets/tickets_table.html" import tickets_table %}
+{% from "tickets/buy_form.html" import buy_form, buy_form_page_script %}
+
+{% set page_title = "Ticketing" %}
+{% set page_scripts = [instructions_page_script, buy_form_page_script, "coffee/deadline.js"] %}
+
+{% block extra_javascript %}
+    {{ super() }}
+    {{ instructions_extra_javascript() }}
+    {% if deadline %}
+        var deadline_settings = {
+            "elem": ".deadline",
+            "time": {{ deadline|tojson }},
+            "url": {{ url_for('time')|tojson }}
+        };  
+    {% else %}
+        var deadline_settings = null;
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if success_notice %}
+        <section class="finalised-success">
+            <h4>Success!</h4>
+            <p>
+                The current state of your tickets is shown below, and you should shortly receive a
+                confirmation email.
+            </p>
+        </section>
+    {% endif %}
+
+    <section class="tickets-welcome">
+        <p>Welcome to the Selwyn Snowball ticket ordering website!</p>
+        <p>You are {{ user_details_inline(session.user) }}.</p>
+    </section>
+
+    {{ instructions(qpp_sentence, prices, mode_sentence) }}
+
+    {% if unfinalised_tickets > 0 %}
+        <section class="unfinalised-tickets">
+            <h4>
+                Warning! {{ unfinalised_tickets }} &ldquo;un-finalised&rdquo; {{ 'ticket'|plural(unfinalised_tickets) }}.
+            </h4>
+            <p>
+                You reserved {{ unfinalised_tickets }} tickets recently, but are yet to fill out the details on them.
+                {% if deadline is not none %}
+                    <span class="deadline">If you do not complete your order, they will automatically expire.</span>
+                {% endif %}
+                <a href='{{ url_for(".details") }}'>Resume order</a>.
+            </p>
+        </section>
+    {% endif %}
+
+    {% if outstanding_balance > 0 %}
+        <section class="payment-info">
+            <h4>
+                Please make a payment of <span class='amount'>{{ outstanding_balance|pounds_pence(true) }}</span>,
+                reference <span class='reference'>{{ payment_reference }}</span>
+            </h4>
+            <p>All payments should be made by bank transfer to the Selwyn Snowball account:</p>
+            <table class="bank-details">
+                <tr>
+                    <td>Sort code</td>
+                    <td>reacted</td>
+                </tr>
+                <tr>
+                    <td>Account number</td>
+                    <td>redacted</td>
+                </tr>
+            </table>
+            <p>It is very important that you include the above reference with your payment.</p>
+            <p>
+                If you are unable to pay via bank transfer, or have any other problems, please email
+                <a href="mailto:ticketing@selwynsnowball.co.uk">ticketing@selwynsnowball.co.uk</a>
+                as soon as possible.
+            </p>
+        </section>
+    {% endif %}
+
+    {% if finalised_tickets|length %}
+        <section class="tickets-overview">
+            {{ tickets_table(finalised_tickets, show_payment=true, title='Your Tickets') }}
+        </section>
+    {% endif %}
+
+    {{ buy_form(ticket_modes, prices, qpp_reached, qpp_max_space, enable_buttons, buy_more) }}
+{% endblock %}

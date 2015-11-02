@@ -1,0 +1,52 @@
+{% macro tickets_table(tickets, show_payment=false, title=none) %}
+    <table class='tickets-table'>
+        <thead>
+            {% if title is not none %}
+                <tr class='title'>
+                    <th colspan="{{ 5 if show_payment else 3 }}">{{ title }}</th>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>Name</th>
+                <th>College</th>
+                <th>Type</th>
+                {% if show_payment %}
+                    <th>Price</th>
+                    <th>Payment</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+                <tr>
+                    <td>{{ ticket.othernames }} {{ ticket.surname }}</td>
+                    <td>{{ ticket.college_id|college_name }}</td>
+                    <td>
+                        {%- if ticket.vip -%}
+                            VIP
+                        {%- else -%}
+                            Standard
+                        {%- endif -%}
+                        {%- if ticket.waiting_list -%}
+                            , waiting list
+                        {%- endif -%}
+                    </td>
+                    {% if show_payment %}
+                        <td>{{ ticket.price|pounds_pence(true) }}</td>
+                        <td>
+                            {%- if ticket.price != 0 and not ticket.waiting_list -%}
+                                {%- if ticket.paid -%}
+                                    Paid
+                                {%- else -%}
+                                    Pending
+                                {%- endif -%}
+                            {%- else -%}
+                                n/a
+                            {%- endif -%}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

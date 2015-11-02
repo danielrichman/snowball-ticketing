@@ -1,0 +1,12 @@
+{% extends "theme/base.html" %}
+
+{% block header %}
+    <h1 class="site-title"><a href='{{ url_for('info.index') }}'>{{ site_title }}</a></h1>
+    <ul class="navigation">
+        <li><a href="{{ url_for('info.ents') }}">Ents &amp; Food</a></li>
+        <li><a href="{{ url_for('info.committee') }}">Committee</a></li>
+        <li><a href="{{ url_for('login.index', section='login-choices') }}">Ticketing</a></li>
+        <li><a href="{{ url_for('info.workers') }}">Workers</a></li>
+        <li><a href="{{ url_for('info.sponsorship') }}">Sponsorship</a></li>
+    </ul>
+{% endblock %}

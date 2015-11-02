@@ -1,0 +1,50 @@
+{% extends "theme/info_base.html" %}
+{% set full_whiskers = true %}
+
+{% block content %}
+    <div id="home-carousel" class="carousel slide home-carousel">
+        <div class="carousel-inner">
+            <div class="active item theme-blurb">
+                <h3>Come and pad through the dusky streets of Fin de Si&eacute;cle Paris with Le Chat Noir ...</h3>
+                <p>
+                    ... pass a lavish ballroom brimming with food and wine and stop to have cocktails at our
+                    jazz club before slinking back into the shadows. <br>
+                    The only winter ball in Cambridge this year takes its inspiration from the first modern
+                    cabaret club, set up in Montmartre in 1881.
+                </p>
+                <img src="{{ url_for('static', filename='theme/logo.png') }}">
+                <p class="date">6<sup>th</sup> December 2013</p>
+            </div>
+            <div class="item hudson-taylor">
+                <p>Hudson Taylor</p>
+            </div>
+            <div class="item ticket-release">
+                {% if now().timetuple() > (2013, 10, 19, 7) %}
+                    {# careful! this will need to be re-prerendered #}
+                    <p class='buy-manage'>Buy &amp; Manage Tickets</p>
+                    <p class='login'><a href='{{ url_for('login.index', section='login-choices') }}'>Login to the online order system</a></p>
+                {% else %}
+                    <p class='release'>Ticket release:</p>
+                    <p class='when'>8AM Saturday 19<sup>th</sup> October</p>
+                {% endif %}
+            </div>
+            <div class="item jive-aces">
+                <h3>
+                    Presenting:
+                    <img src="{{ url_for('static', filename='theme/jive_aces_logo.png') }}" alt="The Jive Aces">
+                </h3>
+                <img src="{{ url_for('static', filename='theme/jive_aces_bgt.jpg') }}">
+            </div>
+        </div>
+
+        <a class="invisible-carousel-control left" href="#home-carousel" data-slide="prev"></a>
+        <a class="invisible-carousel-control right" href="#home-carousel" data-slide="next"></a>
+
+        <ol class="carousel-indicators">
+            <li data-target="#home-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#home-carousel" data-slide-to="1"></li>
+            <li data-target="#home-carousel" data-slide-to="2"></li>
+            <li data-target="#home-carousel" data-slide-to="3"></li>
+        </ol>
+    </div>
+{% endblock %}

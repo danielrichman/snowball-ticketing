@@ -1,0 +1,79 @@
+{% set buy_form_page_script = "coffee/tickets_buy_form.js" %}
+
+{% set ticket_type_names = {
+    "standard": "Standard",
+    "vip": "VIP"
+} %}
+
+{% set ticket_mode_names = {
+    "not-yet-open": "not yet on sale",
+    "available": "available",
+    "waiting-list": "waiting list",
+    "waiting-list-small": "waiting list",
+    "closed": "waiting list closed"
+} %}
+
+{% macro buy_form(ticket_modes, prices, qpp_reached, qpp_max_space, enable_buttons, buy_more) %}
+    <section class='tickets-buy {{ buy_more|sif('more') }}'>
+        <h2>Buy Tickets</h2>
+
+        {% if buy_more and (enable_buttons.standard or enable_buttons.vip) %}
+            <p class="more">You may of course buy more tickets:</p>
+        {% endif %}
+
+        <form action="{{ url_for(".buy") }}" method="POST">
+            <input type="hidden" name="csrf_secret" value="{{ session.csrf_secret }}">
+            {% for type in ('standard', 'vip') %}
+                {% if ticket_modes[type] in ('waiting-list', 'waiting-list-small') %}
+                    <input type="hidden" name="waiting_list_{{ type }}" value="yes">
+                {% endif %}
+            {% endfor %}
+
+            <fieldset class="buy-line">
+                <span class='prefix'>Buy</span>
+                {% if not enable_buttons.standard and not enable_buttons.vip %}
+                    {% set bnm = 'disabled' %}
+                {% elif qpp_max_space is not none %}
+                    {% set bnm = 'max="{0}"'.format(qpp_max_space) %}
+                {% else %}
+                    {% set bnm = '' %}
+                {% endif %}
+                <input class='buy_number' name="number" type="number" step="1" min="1" {{ bnm|safe }} value="1">
+
+                {% for type in ('standard', 'vip') %}
+                    {% set disabled = 'disabled' if not enable_buttons[type] else '' %}
+                    <button name="type" value="{{ type }}" class='ticket-type {{ type }} {{ ticket_modes[type] }}' {{ disabled }}>
+                        <span class='type'>
+                            {{- ticket_type_names[type] }} ticket<span class='buy_number-plural'>s</span>
+                            <span class='price'>{{ prices[type]|pounds_pence(True) -}}</span>
+                        </span>
+
+                        {% if qpp_reached[type] %}
+                            <span class='quota-reached'>quota reached</span>
+                        {% else %}
+                            <span class='mode'>{{ ticket_mode_names[ticket_modes[type]] }}</span>
+                        {% endif %}
+                    </button>
+                {% endfor %}
+            </fieldset>
+
+            {% set wls_standard = ticket_modes.standard == 'waiting-list-small' and not qpp_reached.standard %}
+            {% set wls_vip = ticket_modes.vip == 'waiting-list-small' and not qpp_reached.vip %}
+
+            {% if wls_standard or wls_vip %}
+                <p class='waiting-list-small-sentence'>
+                    The waiting list for
+                    {% if wls_standard and wls_vip %}
+                        standard and VIP
+                    {% elif wls_standard %}
+                        standard
+                    {% elif wls_vip %}
+                        VIP
+                    {% endif %}
+                    tickets is currently very small, so (though officially we cannot guarantee this) you will
+                    almost certainly be able to buy a ticket.
+                </p>
+            {% endif %}
+        </form>
+    </section>
+{% endmacro %}

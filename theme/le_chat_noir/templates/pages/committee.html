@@ -1,0 +1,24 @@
+{% extends "theme/info_base.html" %}
+
+{% set page_title = "Committee" %}
+
+{% block content %}
+    <section class='info committee'>
+        <table class='committee-list'>
+            {% for role in committee %}
+            <tr>
+                <td class='role'><a href='mailto:{{ role.email }}@selwynsnowball.co.uk'>{{ role.name }}</a></td>
+                <td>
+                    <ul class='names'>
+                        {% for name in role.people %}
+                        <li>{{ name }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p class="home"><a href="{{ url_for('info.index') }}">Home</a></p>
+    </section>
+{% endblock %}

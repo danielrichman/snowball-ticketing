@@ -1,0 +1,93 @@
+ul.login-choices, ul.password-choices {
+    margin: (@baseLineHeight / 2) 0;
+
+    li {
+        display: block;
+    }
+    a, button {
+        .btn;
+        .btn-block;
+
+        padding-top: 15px;
+        padding-bottom: 15px;
+
+        #font > .shorthand(@baseFontSize * 1.75, normal,
+                           @baseLineHeight * 1.5);
+    }
+    &.disabled a, &.disabled button {
+        .btn.disabled;
+    }
+}
+
+ul.login-choices {
+    display: block;
+
+    a {
+        text-align: left;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin: (@baseLineHeight / 2) 0;
+
+        .clearfix();
+
+        small {
+            position: relative;
+            top: ( @baseLineHeight * (1.5 - 1) * -0.5 + 2px );
+            #font > .shorthand(@baseFontSize * 0.85, normal, @baseLineHeight);
+        }
+
+        .method {
+            float: right;
+
+            &.raven:before {
+                content: "\00a0";
+                display: inline-block;
+                width: 43px;
+                margin-right: 10px;
+                background-image: url("@{theme_static}raven_30px.png");
+            }
+        }
+    }
+}
+
+p.mode_sentence {
+    margin: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+ul.password-choices {
+    .makeRow();
+
+    li {
+        .makeColumn(4);
+    }
+}
+
+form.login-form, form.user-details-form {
+    margin: (@baseLineHeight / 2) 0;
+
+    .form-horizontal;
+
+    button {
+        .btn;
+
+        margin-top: 3px;
+    }
+
+    .controls .data {
+        height: 20px;
+        padding: 5px 0;
+        display: inline-block;
+    }
+
+    .control-group.error select option {
+        color: black;
+    }
+}
+
+.email-confirm-alert {
+    .alert;
+    .alert-block;
+    /* alert-warning */
+}

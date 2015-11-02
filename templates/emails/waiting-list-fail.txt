@@ -1,0 +1,12 @@
+Dear {{ recipient.name }},
+
+{% rewrap %}
+I am sorry to let you know that we will not be offer you any tickets for your waiting list places for the Snowball this year.
+
+As it is so close to the ball, we have decided to freeze the refunding and sale of new tickets. You may however be able to get a ticket via a name change - we would suggest that you post on the Snowball 2013 Facebook page to see if there are any people offering to sell. The deadline for name changes will be 18:00 (6:00pm) this evening (05 Dec 2013).
+{% endrewrap %}
+
+Apologies once more and we hope to see you at next year's ball.
+
+Thanks,
+Snowball Ticketing

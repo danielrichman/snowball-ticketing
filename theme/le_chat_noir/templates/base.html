@@ -1,0 +1,31 @@
+{% extends "document.html" %}
+
+{% set site_title = "Le Chat Noir" %}
+{% set theme_scripts = ["coffee/theme/common.js"] %}
+
+{% block extra_header %}
+    <!--[if lte IE 8]>
+        <link href="{{ url_for('static', filename='theme/ie8.css') }}" rel="stylesheet">
+    <![endif]-->
+    <!--[if lte IE 9]>
+        <link href="{{ url_for('static', filename='theme/ie9.css') }}" rel="stylesheet">
+    <![endif]-->
+
+    <link href="{{ url_for('static', filename='theme/fonts/noir_et_blanc.css') }}" rel="stylesheet">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='theme/apple-touch-icon-144-precomposed.png') }}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ url_for('static', filename='theme/apple-touch-icon-114-precomposed.png') }}">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url_for('static', filename='theme/apple-touch-icon-72-precomposed.png') }}">
+                    <link rel="apple-touch-icon-precomposed" href="{{ url_for('static', filename='theme/apple-touch-icon-57-precomposed.png') }}">
+                                   <link rel="shortcut icon" href="{{ url_for('static', filename='theme/favicon.ico') }}">
+{% endblock %}
+
+{% block body %}
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+
+    <div class="content {{ full_whiskers|sif('full-whiskers') }}">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

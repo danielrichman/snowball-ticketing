@@ -1,0 +1,66 @@
+{% extends "theme/ticketing_base.html" %}
+
+{% set page_title = "Forgotten Password" %}
+
+{% block content %}
+
+{% if success|d %}
+    <p class='text-success'>
+        Password changed.
+        <a href='{{ next }}'>Proceed to the Ticketing system.</a>
+    </p>
+{% elif invalid|d %}
+    <p class='text-error'>Invalid reset password link.</p>
+
+    <ul>
+        <li>Maybe try copying and pasting the whole link into the browser address bar.</li>
+        <li>
+            Note that the reset links only last for a few days before they expire.
+            The expiration date of your reset password link should have been included
+            in the email.
+        </li>
+        <li>
+            You may begin the process again
+            <a href="{{ url_for('.index', section='password-forgotten') }}">here</a>.
+        </li>
+        <li>
+            If you continue to have trouble, please email
+            <a href='mailto:ticketing@selwynsnowball.co.uk'>ticketing@selwynsnowball.co.uk</a>.
+        </li>
+    </ul>
+{% elif ready|d or change_failed|d %}
+    <form action="{{ url_for('.email_reset', user_id=user_id, secret=secret) }}"
+          method="POST" class='login-form'>
+        <div class='control-group'>
+            <label class='control-label'>Email</label>
+            <div class='controls'>
+                <span class="input-large uneditable-input">{{ email }}</span>
+            </div>
+        </div>
+        <div class='control-group {{ password_short|sif('error') }}'>
+            <label class='control-label' for="password">Password</label>
+            <div class='controls'>
+                <input type="password" id="password" name="password">
+                {% if password_short|d %}
+                    <span class='help-inline'>Please pick a longer password.</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class='control-group {{ password_again_bad|sif('error') }}'>
+            <label class='control-label' for="password_again">Password (again)</label>
+            <div class='controls'>
+                <input type="password" id="password_again" name="password_again">
+                {% if password_again_bad|d %}
+                    <span class='help-inline'>The passwords didn't match.</span>
+                {% endif %}
+            </div>
+        </div>
+        <div class='control-group'>
+            <div class='controls'>
+                <button type="submit">Signup</button>
+            </div>
+        </div>
+    </form>
+{% endif %}
+
+{% endblock %}

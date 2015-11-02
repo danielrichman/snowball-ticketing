@@ -1,0 +1,144 @@
+{% extends "theme/ticketing_base.html" %}
+
+{% set page_title = "Your Details" %}
+{% set page_scripts = ["coffee/user_details.js"] %}
+
+{% block content %}
+    {% if not email_confirmed %}
+        <div class="email-confirm-alert" id="email-confirm-alert">
+            <h4>Your email address ({{ email }}) has not been confirmed.</h4>
+            When you signed up, you were sent an email with a link that would confirm your ownership of this
+            email address. <a id="email-confirm-resend" href='{{ url_for('.email_confirm_resend') }}'>Re-send?</a>
+        </div>
+    {% endif %}
+
+    <form action="{{ url_for('.user_details') }}" method="POST" class="user-details-form">
+        <input type="hidden" name="csrf_secret" value="{{ session.csrf_secret }}">
+
+        <div class='control-group {{ surname.error|sif('error') }}'>
+            <label class='control-label' for="surname">Surname</label>
+            <div class='controls'>
+                {% if surname.final %}
+                    <span class='data'>{{ surname.value }}</span>
+                {% else %}
+                    <input type="text" id="surname" name="surname" value="{{ surname.value }}">
+                    {% if surname.empty %}
+                        <span class='help-inline'>Please provide your surname</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class='control-group {{ othernames.error|sif('error') }}'>
+            <label class='control-label' for="othernames">Other names</label>
+            <div class='controls'>
+                {% if othernames.final %}
+                    <span class='data'>{{ othernames.value }}</span>
+                {% else %}
+                    <input type="text" id="othernames" name="othernames" value="{{ othernames.value }}">
+                    {% if othernames.empty %}
+                        <span class='help-inline'>Please provide your first name</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if person_type in ('undergraduate', 'postgraduate', 'alumnus') %}
+            <div class='control-group'>
+                <div class='controls'>
+                    <span class='data'>{{ person_type|title }}</span>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class='control-group {{ college_id.error|sif('error') }}'>
+            <label class='control-label' for="college_id">College</label>
+            <div class='controls'>
+                {% if college_id.final %}
+                    <span class='data'>
+                        {% if college_id.value is not none %}
+                            {{ college_id.value|college_name }}
+                        {% endif %}
+                    </span>
+                {% else %}
+                    <select name="college_id" id="college_id">
+                        <option value="" {{ "selected" if college_id.value is none else "" }}></option>
+                        {% for id, name in all_colleges()|dictsort(false, 'value') %}
+                            <option value="{{ id }}" {{ "selected" if college_id.value == id else "" }}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+
+                    {% if college_id.empty %}
+                        <span class='help-inline'>Please select your college</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if not matriculation_year.hide %}
+            <div class='control-group {{ matriculation_year.error|sif('error') }}'>
+                <label class='control-label' for="matriculation_year">Matriculation Year</label>
+                <div class='controls'>
+                    {% if matriculation_year.final %}
+                        <span class='data'>{{ matriculation_year.value }}</span>
+                    {% else %}
+                        <input type="text" id="matriculation_year" name="matriculation_year" value="{{ matriculation_year.value }}">
+                        {% if matriculation_year.empty %}
+                            <span class='help-inline'>Please provide your matriculation year</span>
+                        {% elif matriculation_year.future %}
+                            <span class='help-inline'>Matriculation year is in the future</span>
+                        {% elif matriculation_year.invalid %}
+                            <span class='help-inline'>Invalid matriculation year</span>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if crsid is not none %}
+            <div class='control-group'>
+                <label class='control-label'>CRSID</label>
+                <div class='controls'>
+                    <span class='data'>{{ crsid }}</span>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class='control-group'>
+            <label class='control-label'>Email</label>
+            <div class='controls'>
+                <span class='data'>{{ email }}</span>
+            </div>
+        </div>
+
+        <div class='control-group'>
+            <div class='controls'>
+                <p>
+                    Please check the details above carefully before proceeding.
+                    If you have any problems, please email
+                    <a href='ticketing@selwynsnowball.co.uk'>ticketing@selwynsnowball.co.uk</a>
+                </p>
+                {% set h = surname.value == '' or othernames.value == '' %}
+                <p class='text-info name-preview {{ 'hide' if h else '' }}'>
+                    On your ticket, your name will be
+                    &ldquo;<span class="name-preview-value">{{ othernames.value }} {{ surname.value }}</span>&rdquo;.
+                </p>
+                {% if need_email_only %}
+                    <p class='text-error'>
+                        Your email must be confirmed before proceeding.
+                    </p>
+                {% endif %}
+
+                <button type="submit">Continue</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+
+{% block extra_javascript %}
+    {{ super() }}
+    var name_preview = {
+        "surname": {{ surname|tojson }},
+        "othernames": {{ othernames|tojson }}
+    }
+{% endblock %}

@@ -1,0 +1,184 @@
+/* instructions.html */
+.tickets-instructions {
+    position: relative;
+
+    button {
+        .btn;
+    }
+
+    /* move the button into the bottom left corner of the above section
+     * it will clip without care (see section.tickets-welcome below) */
+    .tickets-instructions-hide, .tickets-instructions-show {
+        position: absolute;
+        width: 250px;
+        // section margin-bottom, button line height, button border & padding
+        top: -2 * @baseLineHeight - 10px;
+
+        right: 0;
+        text-align: right;
+
+        button {
+            // this will clip into the text of the section above without care.
+            max-width: 250px;
+            white-space: nowrap;
+        }
+
+        label {
+            .checkbox;
+            .checkbox.inline;
+            padding-top: 0;     // for middle valign
+        }
+    }
+
+    li.mode_sentence {
+        font-weight: bold;
+    }
+}
+section.tickets-welcome {
+    padding-right: 250px;
+}
+
+/* home.html misc */
+section.finalised-success {
+    .alert;
+    .alert-block;
+    .alert-success;
+}
+
+section.unfinalised-tickets {
+    .alert;
+    .alert-block;
+    /* alert-warning */
+}
+
+section.payment-info {
+    .alert;
+    .alert-block;
+    .alert-info;
+
+    .amount, .reference {
+        font-weight: bolder;
+        color: @textColor;
+    }
+    .reference {
+        font-family: monospace;
+    }
+    .bank-details {
+        margin: 0;
+        td {
+            padding: 0 30px 0 0;
+        }
+    }
+}
+
+/* buy_form.html */
+.tickets-buy {
+    h2 { display: none; }
+    &.more { margin-top: 100px; }
+}
+
+.tickets-buy form .buy-line {
+    .makeRow();
+    margin-bottom: 20px;
+
+    // buttons are the tallest with 2 lines (@baseLineHeight * 2),
+    // 2*4px vertical padding, 2*1px border; add .5
+    @buy_line_height: @baseLineHeight * 2.5 + 10px;
+
+    .prefix, .buy_number, .ticket-type {
+        height: @buy_line_height;
+        margin-bottom: 0;
+    }
+
+    .prefix, .buy_number {
+        font-size: @baseFontSize * 2.25; // h2
+    }
+
+    .prefix {
+        .makeColumn(1);
+        line-height: @buy_line_height;
+    }
+
+    .buy_number {
+        .makeColumn(3);
+        line-height: @buy_line_height - 10px;   // 2*4 padding + 2*1 border
+        .box-sizing(border-box);
+        text-align: center;
+    }
+
+    .ticket-type {
+        .btn;
+        .btn-block;
+        .makeColumn(4);
+
+        input {
+            display: none;
+        }
+
+        .type {
+            display: block;
+            font-size: @baseFontSize * 1.25;
+            font-weight: bold;
+        }
+
+        .mode, .quota-reached {
+            display: block;
+        }
+
+        &.closed .mode, .quota-reached { .text-error; }
+        &.available .mode, &.waiting-list-small .mode { .text-success; }
+        &.waiting-list .mode { .text-info; }
+    }
+}
+
+/* tickets/details.html */
+.counts-sentence {
+    font-weight: bold;
+}
+
+.tickets-details-continue {
+    .btn;
+    .btn-large;
+}
+
+.submitted-expired, .submitted-finalised {
+    .alert;
+    .alert-block;
+    .alert-error;
+}
+
+form.tickets-details {
+    .form-horizontal;
+
+    fieldset.ticket {
+        margin-bottom: @baseLineHeight * 2;
+
+        legend {
+            margin-bottom: 0;
+        }
+
+        .control-group.person-type select {
+            width: 500px;
+        }
+    }
+
+    div.submit {
+        margin-top: @baseLineHeight * 3;
+
+        button {
+            .tickets-details-continue;
+            margin-top: @baseLineHeight * 0.5;
+        }
+    }
+}
+
+/* tickets_table.html */
+.tickets-table {
+    .table;
+    .table-bordered;
+
+    .title th {
+        text-align: center;
+        font-size: @baseFontSize * 1.25;
+    }
+}

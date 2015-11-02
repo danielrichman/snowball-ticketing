@@ -1,0 +1,10 @@
+/* ie8 doesn't support background size, so we'll have to just have it full
+ * size.
+ * note the media query in 940px will still work when the screen becomes small
+ * to fix the background-position (thanks to respond.js) */
+body {
+    /* 386px + 20px gap */
+    padding-bottom: 406px;
+    background-size: auto;
+    background-image: url('chapel_sketch_white.png');
+}

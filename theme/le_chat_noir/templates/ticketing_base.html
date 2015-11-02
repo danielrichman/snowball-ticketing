@@ -1,0 +1,23 @@
+{% extends "theme/base.html" %}
+
+{% block header %}
+    <h1 class="site-title">{{ site_title }}</h1>
+    <ul class="title-bar">
+        {% if session.ok %}
+            <li>
+                <form action="{{ url_for('login.logout') }}" method="POST">                     
+                    <input type="hidden" name="csrf_secret" value="{{ session.csrf_secret }}">  
+                    <button type="submit">Log out</button>
+                </form>
+            </li>
+        {% else %}
+            <li><a href="{{ url_for('login.index', section='login-choices') }}">Log in</a></li>
+        {% endif %}
+        <li id='page-title'>{{ page_title }}</li>
+        {% if session.ok and request.blueprint == 'tickets' and request.endpoint != 'tickets.home' %}
+            <li><a href="{{ url_for('tickets.home') }}">Tickets</a></li>
+        {% else %}
+            <li><a href="{{ url_for('info.index') }}">Home</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

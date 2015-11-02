@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% if page_title is defined %}
+            <title>{{ page_title }} - {{ site_title }}</title>
+        {% else %}
+            <title>{{ site_title }}</title>
+        {% endif %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="{{ url_for('static', filename='snowball.css') }}" rel="stylesheet" media="screen">
+
+        <!--[if lte IE 8]>
+            <script src="{{ url_for('static', filename='html5shiv.js') }}"></script>
+            {# Respond.js: IE8 support for media queries #}
+            <script src="{{ url_for('static', filename='respond.min.js') }}"></script>
+        <![endif]-->
+
+        <style type="text/css" id="extra-css">
+            {% block extra_css %}{% endblock %}
+        </style>
+
+        {% block extra_header %}{% endblock %}
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+
+        <script type="text/javascript">
+            var page_title = {{ (page_title if page_title is defined else none)|tojson }};
+            var site_title = {{ site_title|tojson }};
+            {% if session.ok %}
+                var ajax_secret = {{ session.ajax_secret|tojson }};
+            {% endif %}
+            {% block extra_javascript %}{% endblock %}
+        </script>
+
+        <script src="{{ url_for('static', filename='jquery-1.10.2.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='coffee/common.js') }}"></script>
+        {% if theme_scripts is defined %}
+            {% for script in theme_scripts %}
+                <script src="{{ url_for('static', filename=script) }}"></script>
+            {% endfor %}
+        {% endif %}
+        {% if page_scripts is defined %}
+            {% for script in page_scripts %}
+                <script src="{{ url_for('static', filename=script) }}"></script>
+            {% endfor %}
+        {% endif %}
+    </body>
+</html>

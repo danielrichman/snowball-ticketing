@@ -1,0 +1,34 @@
+form.tickets-details {
+    fieldset.ticket {
+        // defaults (as for Cam current member):
+        //      all shown except matriculation year
+        // person-type !important for below hide all
+        .control-group {
+            &.person-type { display: block !important; }
+            &.matriculation-year { display: none; }
+        }
+
+        // none, me: hide all but person-type
+        &.person-type-none, &.person-type-me {
+            .control-group { display: none; }
+        }
+
+        // alumnus: show matriculation year
+        &.person-type-alumnus .control-group.matriculation-year { display: block; }
+
+        // non-cam: hide college
+        &.person-type-non-cam .control-group.college { display: none; }
+    }
+}
+.tickets-instructions {
+    .tickets-instructions-hide { display: block; }
+    .tickets-instructions-show { display: none; }
+
+    &.collapsed {
+        .tickets-instructions-hide { display: none; }
+        .tickets-instructions-show { display: block; }
+        p, ul { display: none; }
+    }
+}
+
+.deadline.imminent { .text-error; }

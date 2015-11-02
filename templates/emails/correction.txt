@@ -1,0 +1,21 @@
+{%- set subject = "Snowball Tickets Collection - Correction Correction" -%}
+
+Dear {{ recipient.name }},
+
+Well, that was embarrassing:
+Wednesday _4th_ 13:00 - 15:00 in the Small Examination Hall Foyer on the New Museums Site.
+
+To clarify, here are the options:
+
+Monday 2nd, 18:15 - 20:00; Tower Room, Selwyn College
+Tuesday 3rd, 18:15 - 20:00; Tower Room, Selwyn College
+Wednesday 4th, 13:00 - 15:00; Small Examination Hall Foyer, New Museums Site
+
+The examination hall is located here:
+
+http://map.cam.ac.uk/Old+Examination+Halls#52.203681,0.119845,18,52.203770,0.119711
+
+Sorry for the spam,
+
+Snowball 2013 Ticketing
+ticketing@selwynsnowball.co.uk

@@ -1,0 +1,66 @@
+{% extends "theme/ticketing_base.html" %}
+
+{% set login_titles = {
+    "login-choices": "Log in",
+    "password-choices": "Password Login",
+    "password-login": "Password Login",
+    "password-signup": "Password Login - Signup",
+    "password-forgotten": "Forgotten Password"
+} %}
+
+{% set page_title = login_titles[section] %}
+{% set page_scripts = ["coffee/history.js", "coffee/login.js"] %}
+
+{% block extra_javascript %}
+    {{ super() }}
+    var initial_section = {{ section|tojson }};
+    var history_sections = {{ login_titles|add_history_urls(".index")|tojson }};
+{% endblock %}
+
+{% block extra_css %}
+{# until the JS loads. #}
+section { display: none; }
+section#{{ section }} { display: block; }
+{% endblock %}
+
+{% block content %}
+<section id="login-choices" class="login-section">
+    <ul class="login-choices">
+        <li>
+            <a href='{{ url_for('.raven_login') }}'>
+                Current Cambridge Students
+                <span class="method raven">Log in using Raven</span>
+            </a>
+        </li>
+        <li>
+            <a href='{{ url_for('.index', section='password-choices') }}' data-section="password-choices">
+                Alumni
+                <span class="method">Password login</span>
+            </a>
+        </li>
+    </ul>
+    {% if tickets_mode_sentence %}
+        <p class="mode_sentence">{{ tickets_mode_sentence }}.</p>
+    {% endif %}
+</section>
+
+<section id="password-choices" class="login-section">
+    <ul class="password-choices">
+        <li><a href='{{ url_for('.index', section='password-signup') }}'>Sign up</a></li>
+        <li><a href='{{ url_for('.index', section='password-login') }}'>Log in</a></li>
+        <li><a href='{{ url_for('.index', section='password-forgotten') }}'>Forgotten password</a></li>
+    </ul>
+</section>
+
+<section id="password-signup" class="login-section">
+    {% include "login/forms/password-signup.html" %}
+</section>
+
+<section id="password-login" class="login-section">
+    {% include "login/forms/password-login.html" %}
+</section>
+
+<section id="password-forgotten" class="login-section">
+    {% include "login/forms/password-forgotten.html" %}
+</section>
+{% endblock %}

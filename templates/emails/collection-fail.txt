@@ -1,0 +1,18 @@
+Dear {{ recipient.name }},
+
+{% rewrap %}
+Our system indicates that you have not yet collected your tickets. In order to resolve this, we have several solutions:
+
+ - If you are a Selwynite, we have put your ticket in your pigeon hole.
+
+ - If you are not a Selwynite but know someone at Selwyn, let us know if you would like us to drop it off in that person's pigeon hole.
+
+ - If you are in Cambridge on Friday afternoon, we will hold a fourth collection time from 16:15 until 18:00 just outside the Porters' Lodge
+
+ - Otherwise, you will be able to pick your ticket up on the door.
+{% endrewrap %}
+
+Please contact ticketing@selwynsnowball.co.uk if you have any issues with this.
+
+Thanks,
+Snowball Ticketing

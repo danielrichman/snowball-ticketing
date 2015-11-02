@@ -1,0 +1,53 @@
+{% extends "theme/ticketing_base.html" %}
+
+{% set page_title = "Ticket Purchasing Failed" %}
+
+{% block content %}
+    <div class='error-page'>
+        <h4>Failed to buy tickets</h4>
+
+        <p>
+            {% if reason == 'form race' %}
+                Sorry, but it looks like that in between you loading the previous page and
+                clicking &ldquo;buy&rdquo;, someone else has taken the last
+                {% if waiting_list %}
+                    spot on the waiting list.
+                {% else %}
+                    ticket.
+                    {% if suggest_waiting_list %}
+                        Don't despair though, the waiting list is currently very short and there's a
+                        good chance that you will be able to buy tickets if you <a href='{{ url_for('.home') }}'>join it</a>.
+                    {% endif %}
+                {% endif %}
+            {% elif reason == 'insufficient spare' %}
+                {# number shouldn't be 1 - that's turned into a form race (which it should be anyway) #}
+                {% if waiting_list %}
+                    Sorry, but there aren't {{ number }} spaces left on the waiting list.
+                {% else %}
+                    Sorry, but there aren't enough tickets left for you to buy {{ number }}.
+                    {% if suggest_waiting_list %}
+                        Don't despair though, the waiting list is currently very short and there's a
+                        good chance that you will be able to buy tickets if you <a href='{{ url_for('.home') }}'>join it</a>.
+                    {% endif %}
+                {% endif %}
+            {% elif reason == 'qpp any' %}
+                Sorry, but you may buy a maximum of {{ qpp_value }} {{ 'ticket'|plural(qpp_value) }}.
+            {% elif reason == 'qpp type' %}
+                Sorry, but you may buy a maximum of {{ qpp_value }}
+                {% if ticket_type == 'vip' %}
+                    VIP
+                {% else %}
+                    standard
+                    {% endif %}
+                {{ 'ticket'|plural(qpp_value) }}.
+            {% elif reason == 'bad_number' %}
+                Please enter a valid number of tickets.
+            {% endif %}
+        </p>
+
+        <ul class='error-actions'>
+            <li><a href='{{ url_for(".home") }}'>Tickets</a></li>
+            <li><a href='{{ url_for("info.index") }}'>Home</a></li>
+        </ul>
+    </div>
+{% endblock %}

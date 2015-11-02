@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+        body {
+            width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+        }
+
+        .largegraph {
+            width: 590px;
+            float: left;
+            border: 1px solid #000;
+            margin: 4px;
+        }
+
+        .graph {
+            width: 290px;
+            float: left;
+            border: 1px solid #000;
+            margin: 4px;
+        }
+
+        #rawTable {
+            text-align: left;
+            margin: 0 auto;
+        }
+        #rawTable td {
+            padding-right: 20px;
+        }
+    </style>
+    <script type="text/javascript" src="{{ url_for('static', filename='admin/Chart.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='jquery-1.10.2.min.js') }}"></script>
+    <script>
+
+    $(function() {
+
+        var histogram = {{ histogram|tojson }};
+        var timeLabels = [];
+        var timeValues = [];
+
+        for (var i=0; i<histogram.length; i++)
+        {
+            if (i%6==0) {
+                timeLabels.push(histogram[i][0][1] + "/" + histogram[i][0][2] + " - " + histogram[i][0][3] + ":00");
+            } else {
+                timeLabels.push("");
+            }
+            timeValues.push(histogram[i][1]);
+        }
+
+        var timeData = {
+            labels : timeLabels,
+            datasets : [
+                {
+                    fillColor : "rgba(220,220,220,0.5)",
+                    strokeColor : "rgba(220,220,220,1)",
+                    pointColor : "rgba(220,220,220,1)",
+                    pointStrokeColor : "#fff",
+                    data : timeValues
+                }
+            ]
+        };
+
+        var ctx = $("#timeChart").get(0).getContext("2d");
+        var timeChart = new Chart(ctx).Line(timeData);
+
+        //pieOptions
+        var pieOptions = {
+            //Boolean - Whether we should show a stroke on each segment
+            segmentShowStroke : true,
+
+            //String - The colour of each segment stroke
+            segmentStrokeColor : "#fff",
+
+            //Number - The width of each segment stroke
+            segmentStrokeWidth : 2,
+
+            //Boolean - Whether we should animate the chart
+            animation : true,
+
+            //Number - Amount of animation steps
+            animationSteps : 50,
+
+            //String - Animation easing effect
+            animationEasing : "easeOutBounce",
+
+            //Boolean - Whether we animate the rotation of the Pie
+            animateRotate : false,
+
+            //Boolean - Whether we animate scaling the Pie from the centre
+            animateScale : true,
+
+            //Function - Will fire on animation completion.
+            onAnimationComplete : null
+        };
+
+        //total sales
+        var totalSalesData = [
+            {
+                value : {{ counts.all_standard }},
+                color : "#F38630",
+                label : 'Standard',
+                labelColor : 'white',
+                labelFontSize : '16'
+            },
+            {
+                value : {{ counts.all_vip }},
+                color : "#69D2E7",
+                label : 'VIP',
+                labelColor : 'white',
+                labelFontSize : '16'
+            },
+            {
+                value : {{ quotas.all_any - counts.all_any }},
+                color : "#E0E4CC",
+                label : 'Unsold',
+                labelColor : 'white',
+                labelFontSize : '16'
+            }
+        ];
+
+        var ctx = $("#totalSalesChart").get(0).getContext("2d");
+        var totalSales = new Chart(ctx).Pie(totalSalesData, pieOptions);
+
+        //alumni vs members
+        var alumniVsMembersSalesData = [
+            {
+                value : {{ counts.alumni_any }},
+                color : "#F38630",
+                label : 'Alumni',
+                labelColor : 'white',
+                labelFontSize : '16'
+            },
+            {
+                value : {{ counts.members_any }},
+                color : "#69D2E7",
+                label : 'Members',
+                labelColor : 'white',
+                labelFontSize : '16'
+            }
+        ];
+
+        var ctx = $("#alumniVsMembersSalesChart").get(0).getContext("2d");
+        var alumniVsMembersSales = new Chart(ctx).Pie(alumniVsMembersSalesData, pieOptions);
+
+        //alumni breakdown
+        var alumniBreakdownData = [
+            {
+                value : {{ counts.alumni_standard }},
+                color : "#F38630",
+                label : 'Standard',
+                labelColor : 'white',
+                labelFontSize : '16'
+            },
+            {
+                value : {{ counts.alumni_vip }},
+                color : "#69D2E7",
+                label : 'VIP',
+                labelColor : 'white',
+                labelFontSize : '16'
+            }
+        ];
+
+        var ctx = $("#alumniBreakdownChart").get(0).getContext("2d");
+        var alumniBreakdown = new Chart(ctx).Pie(alumniBreakdownData, pieOptions);
+
+        //members breakdown
+        var membersBreakdownData = [
+            {
+                value : {{ counts.members_standard }},
+                color : "#F38630",
+                label : 'Standard',
+                labelColor : 'white',
+                labelFontSize : '16'
+            },
+            {
+                value : {{ counts.members_vip }},
+                color : "#69D2E7",
+                label : 'VIP',
+                labelColor : 'white',
+                labelFontSize : '16'
+            }
+        ];
+
+        var ctx = $("#membersBreakdownChart").get(0).getContext("2d");
+        var membersBreakdown = new Chart(ctx).Pie(membersBreakdownData, pieOptions);
+
+    });
+
+    </script>
+</head>
+<body>
+    <h1>Snowball sales info</h1>
+
+    <p>Total tickets sold: {{ counts.all_any }}</p>
+    <p>Total waiting list: {{ counts.waiting_all_any }}</p>
+
+    <div id="graphContainer">
+        <div class="largegraph">Sales vs time<br>
+        <canvas id="timeChart" width="500" height="200"></canvas></div>
+        <div class="graph">Total Sales<br>
+        <canvas id="totalSalesChart" width="200" height="200"></canvas></div>
+        <div class="graph">Alumni vs members<br>
+        <canvas id="alumniVsMembersSalesChart" width="200" height="200"></canvas></div>
+        <div class="graph">Alumni breakdown - total sold: {{ counts.alumni_any }}<br>
+        <canvas id="alumniBreakdownChart" width="200" height="200"></canvas></div>
+        <div class="graph">Members breakdown - total sold: {{ counts.members_any }}<br>
+        <canvas id="membersBreakdownChart" width="200" height="200"></canvas></div>
+    </div>
+
+    <br>
+
+    <table id="rawTable">
+        <tr>
+            <td></td>
+            <td>count</td>
+            <td>paid</td>
+            <td>quota</td>
+        </tr>
+        {% for key in counts.keys()|sort %}
+        <tr>
+            <td>{{ key }}</td>
+            <td>{{ counts[key] }}</td>
+            <td>{{ paid[key] }}</td>
+            <td>{{ quotas[key] if quotas[key] is not none else '' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
